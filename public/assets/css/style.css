@@ -1,0 +1,127 @@
+body {
+    background-color: #f3f3f3;
+}
+
+form textarea{
+    resize: none;
+    height: 200px;
+}
+a {
+    color: #055160;
+    text-decoration: none;
+}
+a:hover {
+    color:#066375;
+}
+.bg-white {
+    background-color: #ffffff;
+}
+.second-color{
+    color: #055160;
+}
+.btn-color, button{
+    background-color: #055160 !important;
+    border-color: #055160 !important;
+    color: #ffffff !important;
+}
+.btn-color:hover, button:hover{
+    background-color: #066375 !important;
+    border-color: #066375 !important;
+}
+
+
+
+.navbar_style {
+    background-color: #055160;
+}
+.navbar_style a {
+    color: #ffffff !important;
+}
+
+.navbar_style button {
+    border: none !important;
+    outline: none !important;
+}
+.navbar_style .nav_btn {
+    background-color: #ffffff;
+    display: block;
+    margin-bottom: 6px;
+    padding: 1.5px;
+    width: 31px;
+}
+
+.blog-post-list img {
+    width: 300px;
+    height: 160px;
+    
+}
+
+
+.post-edit-info, .comment-edit{
+    transform: rotate(90deg);
+    width: 30px;
+    cursor: pointer;
+}
+
+.edit-menu {
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: left;
+    width: 130px;
+}
+
+
+/* Comment */
+.comment-edit {
+    position: absolute;
+    top: 15px;
+    right: 0;
+}
+
+
+
+/* Sidebar */
+.sidebar {
+    height: max-content;
+}
+
+
+/* User Avatar */
+.user-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+
+
+/* Pagination */
+.pagination_custom-style .pagination{
+    justify-content: center;
+}
+.pagination_custom-style.comments .pagination{
+    justify-content: start;
+}
+.pagination_custom-style span{
+    font-size: 0.8rem;
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #066375;
+    text-align: center;
+    padding: 4px 10px;
+}
+.pagination_custom-style span:hover{
+    background-color: #055160;
+}
+.pagination_custom-style span a{
+    color: #ffffff;
+}
+.pagination_custom-style span.current{
+    background-color: #00515E;
+    color: #ffffff;
+}
+

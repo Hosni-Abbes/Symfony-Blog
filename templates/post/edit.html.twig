@@ -1,0 +1,12 @@
+{% extends 'layouts/layout.html.twig' %}
+
+
+{% block body %}
+
+    <div class="edit-post-form w-75 m-auto mt-4 bg-white p-3">
+        <h2 class="text-center">Edit: {{post.title}} </h2>
+        {{form(form)}}
+        <a href="{{path('app_post')}}" class="btn btn-secondary">Cancel</a>
+    </div>
+
+{% endblock %}

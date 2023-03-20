@@ -1,0 +1,92 @@
+{% extends 'layouts/layout.html.twig' %}
+
+
+{% block body %}
+
+    <div class="container my-4 py-4 bg-white">
+        <div>
+            <div class="d-flex text-center justify-content-between position-relative">
+                <h3 class="mb-0">{{ post.title }}</h3>
+            {% if app.user.roles is defined and app.user.roles is not null %}
+                {% if "admin" in app.user.roles %}
+                    <span onclick="clickEdit('post', {{post.id}}, event)" class="post-edit-info d-block text-secondary">...</span>
+                    <div class="edit-menu edit-menu_{{post.id}} d-none"></div>
+                {% elseif app.user.id == post.user.id %}
+                    <span onclick="clickEdit('post', {{post.id}}, event)" class="post-edit-info d-block text-secondary">...</span>
+                    <div class="edit-menu edit-menu_{{post.id}} d-none"></div>
+                {% else %}
+                {% endif %}
+            {% endif %}
+            </div>
+            <em class="d-block mb-2 text-secondary">
+                <small>
+                    {% if "admin" in post.user.roles %}
+                        Admin:
+                    {% else %}
+                        User:
+                    {% endif %}
+                    {{post.user.username}} - {{ post.postdate|date('d-m-Y') }}
+                </small>
+            </em>
+            {% if post.image %}
+                <img src="{{ '/assets/images/' ~ post.image }}" class="d-block blog-list-img m-auto" />
+            {% endif %}
+            <p class="text-break"> {{ post.description }}</p>
+        </div>
+        <a href="{{ path("like_post", {id:post.id, like:"like"}) }}"><i class="fas fa-heart text-secondary"></i></a>
+        <small class="text-secondary">
+            {% if post.likescount %} {{post.likescount}}
+            {% else %} 0
+            {% endif %}
+        </small>
+
+
+        <div class="comments mt-5">
+            {% for comment in comments %}
+                <div class="comment mb-3 bg-light py-1 px-2 position-relative">
+                    <div class="user-info-head d-flex align-items-center">
+                        {% if comment.user.image %}
+                            <img class="user-image" src="/assets/images/{{comment.user.image}}"/>
+                        {% else %}
+                            <img class="user-image" src="/assets/images/userdefault.png" />
+                        {% endif %}
+                        <span class="ms-2"><b>{{ comment.user.username }}</b></span>
+                    </div>
+                    <em class="d-block">
+                        <small>
+                            {% if "admin" in comment.user.roles %} Admin - {% endif %}
+                            {{ comment.commentdate|date('d-m-Y') }}
+                        </small>
+                    </em>
+                    <p class="user-comment text-break m-0">{{ comment.commenttext }}</p>
+                    <a href="{{ path("like_comment", {id:comment.id, post:post.id}) }}"><i class="fas fa-heart text-secondary"></i></a>
+                    <small class="text-secondary">
+                        {% if comment.likes %} {{comment.likes}}
+                        {% else %} 0
+                        {% endif %}
+                    </small>
+                    {% if app.user.roles is defined and app.user.roles is not null %}
+                        {% if "admin" in app.user.roles %}
+                            <span onclick="clickEdit('comment', {{comment.id}}, event)" class="comment-edit d-block text-secondary">...</span>
+                            <div class="edit-menu edit-cmnt_{{comment.id}} d-none"></div>
+                        {% elseif app.user.id == comment.user.id %}
+                            <span onclick="clickEdit('comment', {{comment.id}}, event)" class="comment-edit d-block text-secondary">...</span>
+                            <div class="edit-menu edit-cmnt_{{comment.id}} d-none"></div>
+                        {% else %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="pagination_custom-style comments my-3">
+                {{ knp_pagination_render(comments) }}
+            </div>
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div class="comment-form">
+                    {{ form(commentForm) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

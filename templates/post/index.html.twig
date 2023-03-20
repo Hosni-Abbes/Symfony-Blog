@@ -1,0 +1,92 @@
+{% extends 'layouts/layout.html.twig' %}
+
+{% block title %} Home {% endblock %}
+
+{% block body %}
+    
+        <div class="row my-3 ">
+            <div class="row col-8 position-relative blog-post-list">
+                {% if posts %}
+                    {% for post in posts %}
+                        <div class="col-12 mb-3 bg-white py-2">
+                            <div class="">
+                                <div class="d-flex text-center justify-content-between position-relative">
+                                    <h3 class="mb-0">{{ post.title }}</h3>
+                                    {% if app.user.roles is defined and app.user.roles is not null %}
+                                        {% if "admin" in app.user.roles %}
+                                            <span onclick="clickEdit('post', {{post.id}}, event)" class="post-edit-info d-block text-secondary">...</span>
+                                            <div class="edit-menu edit-menu_{{post.id}} d-none"></div>
+                                        {% elseif app.user.id == post.user.id %}
+                                            <span onclick="clickEdit('post', {{post.id}}, event)" class="post-edit-info d-block text-secondary">...</span>
+                                            <div class="edit-menu edit-menu_{{post.id}} d-none"></div>
+                                        {% else %}
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <em class="d-block mb-2 text-secondary">
+                                    <small>
+                                        {% if "admin" in post.user.roles %}
+                                            Admin:
+                                        {% else %}
+                                            User:
+                                        {% endif %}
+                                        {{post.user.username}} - {{ post.postdate|date('d-m-Y') }}
+                                    </small>
+                                </em>
+                                {% if post.image %}
+                                    <img src="{{ '/assets/images/' ~ post.image }}" class="d-block blog-list-img m-auto" />
+                                {% endif %}
+                                <p class="text-break"> {{ post.description }} <a href="{{ path("show_post", {id:post.id}) }}"><small><em>Read more..</em></small></a>  </p>
+                            </div>
+                            {# Likes #}
+                            <div class="bottom-post d-flex justify-content-between">
+                                <div>
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    <a href="{{ path("like_post", {id:post.id}) }}"><i class="fas fa-heart text-secondary"></i></a>
+                                {% else %}
+                                    <i class="fas fa-heart text-secondary"></i>
+                                {% endif %}
+                                    <small class="text-secondary">
+                                        {% if post.likescount %} {{post.likescount}}
+                                        {% else %} 0
+                                        {% endif %}
+                                    </small>
+                                </div>
+                                <a href="{{ path("show_post", {id:post.id}) }}" class="text-secondary text-decoration-none">
+                                {% if post.commentscount %}
+                                <small><em>{{post.commentscount}} Comments</em></small></a>
+                                {% else %}
+                                 <small><em>0 Comments</em></small></a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-danger position-absolute top-50 text-center start-50 translate-middle"> No posts Found! </p>
+                {% endif %}
+                <div class="pagination_custom-style">
+                    {{ knp_pagination_render(posts) }}
+                </div>
+            </div>
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div class="sidebar col-4 ms-3 py-3 bg-white">
+                    <h4 class="second-color mb-3">Create Post</h4>
+                    {{form(form)}}
+                </div>
+            {% else %}
+                <div class="sidebar col-4 ms-3 py-5 bg-white text-center">
+                    <small class="d-block mb-3">
+                        Sign-up or Login to share your posts!
+                    </small>
+                    <div>
+                        <a href="{{ path('register') }}" class="text-decoration-none me-3">Register</a>
+                        <a href="{{ path('app_login') }}" class="text-decoration-none">Login</a>
+                    </div>
+                    
+                </div>
+            {% endif %}
+        </div>
+
+{% endblock %}
